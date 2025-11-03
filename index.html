@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Master Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Level Selection Screen -->
+        <div id="level-select" class="screen">
+            <div class="floating-calculators">
+            </div>
+            <div class="content">
+                <div class="header">
+                    <img src="LOGO.png" alt="Abacusseekho Logo">
+                    <h1>AbacusSeekho.com<sup>®</sup></h1>
+                    <h2>(Brain Development Academy)</h2>
+                    <h3>An ISO 9001:2015 Certified Institute</h3>
+                </div>
+                <h1>Math Master Challenge</h1>
+                <p>Test your math skills with our adaptive difficulty quiz system. Choose your level to begin!</p>
+                <div class="level-grid">
+                    <!-- Levels will be added by JavaScript -->
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Quiz Start Screen -->
+        <div id="quiz-start" class="screen hidden">
+            <div class="floating-calculators"></div>
+            <div class="content">
+                <h2>Level <span id="selected-level">0</span></h2>
+                <p>You'll have 3 seconds per question.<br>There are 100 questions in total.</p>
+                <button id="start-quiz" class="btn-primary">Start Quiz</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz" class="screen hidden">
+            <div class="quiz-header">
+                <div class="level">Level <span id="current-level">0</span></div>
+                <div class="progress">Question <span id="question-number">1</span> of 100</div>
+                <div class="total-time">Total Time: <span id="total-time">0:00</span></div>
+            </div>
+            <div class="quiz-content">
+                <div class="question">
+                    <span id="num1">5</span>
+                    <span id="operation">+</span>
+                    <span id="num2">3</span>
+                </div>
+                <div class="options">
+                    <!-- Options will be added by JavaScript -->
+                </div>
+                <div class="timer">Time remaining: <span id="time-left">3</span>s</div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results" class="screen hidden">
+            <div class="results-card">
+                <h2>Quiz Complete!</h2>
+                <div class="results-content">
+                    <div class="level-display">Level <span id="result-level">0</span></div>
+                    <div class="score"><span id="correct-answers">0</span>/100 Correct</div>
+                    <div class="percentage"><span id="percentage">0</span>%</div>
+                    <div class="time">Time: <span id="time-taken">0m 0s</span></div>
+                </div>
+                <div class="action-buttons">
+                    <button id="retry" class="btn-primary">Retry Level <span id="retry-level">0</span></button>
+                    <button id="home" class="btn-secondary">Choose Different Level</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="quiz.js"></script>
+</body>
+</html>

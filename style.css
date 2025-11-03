@@ -1,0 +1,228 @@
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --background: #111827;
+    --card: #1f2937;
+    --card-hover: #374151;
+    --text: #ffffff;
+    --text-secondary: #9ca3af;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+.screen {
+    min-height: 100vh;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.content {
+    max-width: 32rem;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+}
+
+img {
+    max-width: 100px; /* Adjust logo size */
+    height: auto;
+    position: absolute;
+    top: 15px; /* Keep logo at the top */
+    left: 15px; /* Position logo on the left */
+    margin-right: 1rem; /* Optional, adjust as needed */
+}
+
+h1, h2, h3 {
+    margin: 0; /* Remove margin for tighter spacing */
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 1px; /* Reduce the gap between lines */
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 1px; /* Reduce the gap between lines */
+}
+
+h3 {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px; /* Small gap under h3 */
+}
+
+p {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+}
+
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--text);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--card);
+    color: var(--text);
+}
+
+.btn-secondary:hover {
+    background-color: var(--card-hover);
+}
+
+.quiz-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background-color: var(--background);
+    z-index: 10;
+}
+
+.level {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.progress {
+    font-size: 1.25rem;
+    color: var(--text);
+}
+
+.total-time {
+    color: var(--primary);
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.quiz-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 6rem;
+}
+
+.question {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    max-width: 24rem;
+}
+
+.timer {
+    font-size: 1.25rem;
+    color: var(--primary);
+}
+
+.results-card {
+    background-color: var(--card);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 24rem;
+}
+
+.results-content {
+    background-color: var(--background);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+.level-display {
+    font-size: 1.5rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.score {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.percentage {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.time {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.floating-calculators {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(10px, 10px) rotate(5deg); }
+    50% { transform: translate(0, 20px) rotate(0deg); }
+    75% { transform: translate(-10px, 10px) rotate(-5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
