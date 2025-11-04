@@ -40,95 +40,51 @@ const generateOptions = (correctAnswer: number, min: number, max: number): numbe
 const generateQuestion = (level: number): Question => {
   let num1: number, num2: number, operation: Operation, answer: number;
   
-  switch (level) {
-    case 0:
-      num1 = generateNumber(1, 10);
-      num2 = generateNumber(1, 10);
+  switch (true) {
+    case level <= 1:
+      num1 = generateNumber(1, level === 0 ? 10 : 20);
+      num2 = generateNumber(1, level === 0 ? 10 : 20);
       operation = '+';
       answer = num1 + num2;
       break;
       
-    case 1:
-      num1 = generateNumber(1, 20);
-      num2 = generateNumber(1, 20);
-      operation = '+';
-      answer = num1 + num2;
-      break;
-      
-    case 2:
+    case level <= 2:
       num1 = generateNumber(10, 30);
       num2 = generateNumber(10, 30);
       operation = '+';
       answer = num1 + num2;
       break;
       
-    case 3:
-      if(Math.random() < 0.5){
-        num1 = generateNumber(10, 50);
-        num2 = generateNumber(10, 50);
-        operation = '+';
-        answer = num1 + num2;
-      } else {
-        num1 = generateNumber(20, 50);
-        num2 = generateNumber(10, Math.min(num1, 50));
-        operation = '-';
-        answer = num1 - num2;
-      }
+    case level <= 4:
+      num1 = generateNumber(10, 50);
+      num2 = generateNumber(10, Math.min(num1, 50));
+      operation = Math.random() < 0.5 ? '+' : '-';
+      answer = operation === '+' ? num1 + num2 : num1 - num2;
       break;
       
-    case 4:
-      const op4 = Math.random();
-      if(op4 < 0.5){
+    case level <= 6:
+      if (Math.random() < 0.5) {
         num1 = generateNumber(10, 50);
         num2 = generateNumber(10, 50);
         operation = Math.random() < 0.5 ? '+' : '-';
-        if (operation === '-') {
-          if (num1 < num2) [num1, num2] = [num2, num1];
-          answer = num1 - num2;
-        } else {
-          answer = num1 + num2;
-        }
+        if (operation === '-' && num1 < num2) [num1, num2] = [num2, num1];
+        answer = operation === '+' ? num1 + num2 : num1 - num2;
       } else {
         num1 = generateNumber(2, 12);
         num2 = generateNumber(2, 10);
-        operation = '×';
-        answer = num1 * num2;
+        operation = Math.random() < 0.5 ? '×' : '÷';
+        if (operation === '÷') {
+          answer = num2;
+          num1 = num1 * num2;
+        } else {
+          answer = num1 * num2;
+        }
       }
       break;
       
-    case 5:
-      const op5 = Math.random();
-      if(op5 < 0.5){
-        num1 = generateNumber(10, 50);
-        num2 = generateNumber(10, 50);
-        operation = Math.random() < 0.5 ? '+' : '-';
-        if (operation === '-') {
-          if (num1 < num2) [num1, num2] = [num2, num1];
-          answer = num1 - num2;
-        } else {
-          answer = num1 + num2;
-        }
-      } else {
-        num1 = generateNumber(2, 12);
-        num2 = generateNumber(2, 12);
-        operation = '×';
-        answer = num1 * num2;
-      }
-      break;
-      
-    case 6:
-      const op6 = Math.random();
-      if (op6 < 0.5) {
-        num1 = generateNumber(10, 50);
-        num2 = generateNumber(10, 50);
-        operation = Math.random() < 0.5 ? '+' : '-';
-        if (operation === '-') {
-          if (num1 < num2) [num1, num2] = [num2, num1];
-          answer = num1 - num2;
-        } else {
-          answer = num1 + num2;
-        }
-      } else if (op6 < 0.75) {
+    default: // Level 7-8
+      const op = Math.random();
+      if (op < 0.5) {
         num1 = generateNumber(5, 20);
         num2 = generateNumber(5, 15);
         operation = '×';
@@ -139,69 +95,15 @@ const generateQuestion = (level: number): Question => {
         num1 = num2 * answer;
         operation = '÷';
       }
-      break;
-      
-    case 7:
-      const op7 = Math.random();
-      if (op7 < 0.25) {
-        num1 = generateNumber(10, 50);
-        num2 = generateNumber(10, 50);
-        operation = '+';
-        answer = num1 + num2;
-      } else if (op7 >= 0.25 && op7 < 0.5) {
-        num1 = generateNumber(20, 50);
-        num2 = generateNumber(10, num1);
-        operation = '-';
-        answer = num1 - num2;
-      } else if (op7 >= 0.5 && op7 < 0.75) {
-        num1 = generateNumber(5, 20);
-        num2 = generateNumber(5, 20);
-        operation = '×';
-        answer = num1 * num2;
-      } else {
-        num2 = generateNumber(2, 12);
-        answer = generateNumber(2, 12);
-        num1 = num2 * answer;
-        operation = '÷';
-      }
-      break;
-      
-    default: // Level 8
-      const op8 = Math.random();
-      if (op8 < 0.25) {
-        num1 = generateNumber(10, 50);
-        num2 = generateNumber(10, 50);
-        operation = '+';
-        answer = num1 + num2;
-      } else if (op8 >= 0.25 && op8 < 0.5) {
-        num1 = generateNumber(20, 50);
-        num2 = generateNumber(10, num1);
-        operation = '-';
-        answer = num1 - num2;
-      } else if (op8 >= 0.5 && op8 < 0.75) {
-        num1 = generateNumber(5, 20);
-        num2 = generateNumber(5, 20);
-        operation = '×';
-        answer = num1 * num2;
-      } else {
-        num2 = generateNumber(2, 12);
-        answer = generateNumber(2, 12);
-        num1 = num2 * answer;
-        operation = '÷';
-      }
   }
   
-  let optionMin = Math.max(0, answer - 10);
-  let optionMax = answer + 10;
-  
-  const options = generateOptions(answer, optionMin, optionMax);
+  const options = generateOptions(answer, Math.max(0, answer - 10), answer + 10);
   
   return { num1, num2, operation, answer, options };
 };
 
 const FloatingAbacus: React.FC = () => {
-  const abacusCount = 15;
-  const abacuses = Array.from({ length: abacusCount });
+  const abacuses = Array.from({ length: 15 });
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -273,15 +175,11 @@ const QuizResults: React.FC<{
         <h2 className="text-3xl font-bold text-white mb-6">Quiz Complete!</h2>
         
         <div className="bg-gray-800 p-6 rounded-lg mb-6">
-          <div className="text-2xl text-white mb-2">
-            Level {level}
-          </div>
+          <div className="text-2xl text-white mb-2">Level {level}</div>
           <div className="text-3xl font-bold text-indigo-400 mb-2">
             {score}/100 Correct
           </div>
-          <div className="text-xl text-indigo-300">
-            {percentage.toFixed(1)}%
-          </div>
+          <div className="text-xl text-indigo-300">{percentage.toFixed(1)}%</div>
           <div className="text-gray-400 text-sm mt-2">
             Time: {Math.floor(timeTaken / 60)}m {timeTaken % 60}s
           </div>
@@ -309,7 +207,7 @@ const QuizResults: React.FC<{
 export default function App() {
   const [level, setLevel] = useState<Difficulty | null>(null);
   const [isStarted, setIsStarted] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const [currentQuestion, setCurrentQuestion] = useState<Question>(generateQuestion(0));
   const [questionNumber, setQuestionNumber] = useState(1);
   const [results, setResults] = useState<QuizResult[]>([]);
   const [timeLeft, setTimeLeft] = useState(30);
@@ -370,7 +268,6 @@ export default function App() {
     setResults([]);
     setQuestionNumber(1);
     setShowResults(false);
-    setCurrentQuestion(null);
   };
 
   useEffect(() => {
@@ -448,10 +345,6 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (!currentQuestion) {
-    return <div>Loading...</div>;
   }
 
   return (
