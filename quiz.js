@@ -69,49 +69,90 @@ function generateQuestion(level) {
     
     switch (true) {
         case level <= 1:
-            num1 = generateNumber(1, level === 0 ? 10 : 20);
-            num2 = generateNumber(1, level === 0 ? 10 : 20);
+            num1 = generateNumber(1, level === 0 ? 10 : 10);
+            num2 = generateNumber(1, level === 0 ? 10 : 10);
             operation = '+';
             answer = num1 + num2;
             break;
             
         case level <= 2:
-            num1 = generateNumber(10, 30);
-            num2 = generateNumber(10, 30);
+            num1 = generateNumber(10, 99);
+            num2 = generateNumber(10, 99);
             operation = '+';
             answer = num1 + num2;
             break;
             
-        case level <= 4:
-            if (Math.random() < 0.5) {
-                num1 = generateNumber(10, 50);
-                num2 = generateNumber(10, 50);
+        case level <= 3:
+            if(Math.random() < 0.5){
+                num1 = generateNumber(100, 999);
+                num2 = generateNumber(100, 999);
                 operation = '+';
                 answer = num1 + num2;
             } else {
-                num2 = generateNumber(10, 30);
-                num1 = generateNumber(num2 + 10, 50);
+                num1 = generateNumber(150, 999);
+                num2 = generateNumber(99, (num1-10));
                 operation = '-';
                 answer = num1 - num2;
             }
             break;
             
+        case level <= 4:
+            const op = Math.random();
+            if(op < 0.3){
+                num1 = generateNumber(100, 999);
+                num2 = generateNumber(100, 999);
+                operation = '+';
+                answer = num1 + num2;
+            } else if (op>0.3 && op<0.6) {
+                num1 = generateNumber(150, 999);
+                num2 = generateNumber(99, (num1-10));
+                operation = '-';
+                answer = num1 - num2;
+            } else {
+                num1 = generateNumber(1, 9);
+                num2 = generateNumber(1, 9);
+                operation = 'x';
+                answer = num1 * num2;
+            }
+            break;
+
+        case level <= 5:
+            const op = Math.random();
+            if(op < 0.3){
+                num1 = generateNumber(100, 999);
+                num2 = generateNumber(100, 999);
+                operation = '+';
+                answer = num1 + num2;
+            } else if (op>0.3 && op<0.6) {
+                num1 = generateNumber(150, 999);
+                num2 = generateNumber(99, (num1-10));
+                operation = '-';
+                answer = num1 - num2;
+            } else {
+                num1 = generateNumber(1, 99);
+                num2 = generateNumber(1, 99);
+                operation = 'x';
+                answer = num1 * num2;
+            }
+            break;
+
+            
         case level <= 6:
             const op = Math.random();
             if (op < 0.25) {
-                num1 = generateNumber(10, 50);
-                num2 = generateNumber(10, 50);
+                num1 = generateNumber(100, 999);
+                num2 = generateNumber(100, 999);
                 operation = '+';
                 answer = num1 + num2;
             } else if (op < 0.5) {
-                num2 = generateNumber(10, 30);
-                num1 = generateNumber(num2 + 10, 50);
+                num1 = generateNumber(150, 999);
+                num2 = generateNumber(99, (num1-10));
                 operation = '-';
                 answer = num1 - num2;
             } else if (op < 0.75) {
-                num1 = generateNumber(2, 12);
-                num2 = generateNumber(2, 10);
-                operation = '×';
+                num1 = generateNumber(1, 99);
+                num2 = generateNumber(1, 99);
+                operation = 'x';
                 answer = num1 * num2;
             } else {
                 num2 = generateNumber(2, 10);
