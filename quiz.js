@@ -15,7 +15,21 @@ const screens = {
     quiz: document.getElementById('quiz'),
     results: document.getElementById('results')
 };
+// Helper functions for question generation
+function generateNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
+function generateOptions(correctAnswer, min, max) {
+    const options = new Set([correctAnswer]);
+    while (options.size < 4) {
+        const wrong = correctAnswer + generateNumber(-5, 5);
+        if (wrong !== correctAnswer && wrong >= min && wrong <= max) {
+            options.add(wrong);
+        }
+    }
+    return Array.from(options).sort(() => Math.random() - 0.5);
+}
 // Initialize floating calculators
 function initializeFloatingCalculators() {
     const containers = document.querySelectorAll('.floating-calculators');
