@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Brain, Calculator } from 'lucide-react';
 
 type Difficulty = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -231,7 +231,7 @@ export default function App() {
     setCurrentQuestion(generateQuestion(level));
   };
 
-  const handleAnswer = (answer: number) => {
+  const handleAnswer = useCallback((answer: number) => {
     if (!currentQuestion || level === null) return;
     
     const result: QuizResult = {
@@ -245,21 +245,25 @@ export default function App() {
     setResults((prev) => [...prev, result]);
 
     if (questionNumber < 100) {
+      const nextQuestion = generateQuestion(level);
       setQuestionNumber((prev) => prev + 1);
-      setCurrentQuestion(generateQuestion(level));
+      setCurrentQuestion(nextQuestion);
       setTimeLeft(30);
     } else {
       setShowResults(true);
       setIsStarted(false);
     }
-  };
+  }, [currentQuestion, level, questionNumber]);
 
   const handleRetry = () => {
-    setIsStarted(false);
+    if (level === null) return;
+    setIsStarted(true);
+    setStartTime(Date.now());
     setResults([]);
     setQuestionNumber(1);
     setShowResults(false);
-    handleStart();
+    setTimeLeft(30);
+    setCurrentQuestion(generateQuestion(level));
   };
 
   const handleHome = () => {
@@ -270,17 +274,21 @@ export default function App() {
     setShowResults(false);
   };
 
+  // Timer effect
   useEffect(() => {
-    let timer: number;
-    if (isStarted && timeLeft > 0 && !showResults) {
-      timer = window.setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (timeLeft === 0 && !showResults && isStarted) {
+    if (!isStarted || showResults) return;
+    
+    if (timeLeft <= 0) {
       handleAnswer(-1);
+      return;
     }
+    
+    const timer = window.setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    
     return () => clearInterval(timer);
-  }, [isStarted, timeLeft, showResults]);
+  }, [isStarted, showResults, timeLeft, handleAnswer]);
 
   if (!level) {
     return (
