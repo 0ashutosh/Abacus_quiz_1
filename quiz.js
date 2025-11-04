@@ -49,87 +49,166 @@ function initializeFloatingCalculators() {
 }
 
 // Quiz logic
-function generateNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function generateOptions(correctAnswer, min, max) {
-    const options = new Set([correctAnswer]);
-    while (options.size < 4) {
-        const wrong = correctAnswer + generateNumber(-5, 5);
-        if (wrong !== correctAnswer && wrong >= min && wrong <= max) {
-            options.add(wrong);
-        }
-    }
-    return Array.from(options).sort(() => Math.random() - 0.5);
-}
-
 function generateQuestion(level) {
     let num1, num2, operation, answer;
     
     switch (true) {
-        case level <= 1:
-            num1 = generateNumber(1, level === 0 ? 10 : 20);
-            num2 = generateNumber(1, level === 0 ? 10 : 20);
+        case level === 0: // Level 0: Single digit add only (easier)
+            num1 = generateNumber(1, 5);
+            num2 = generateNumber(1, 5);
             operation = '+';
             answer = num1 + num2;
             break;
             
-        case level <= 2:
-            num1 = generateNumber(10, 30);
-            num2 = generateNumber(10, 30);
-            operation = '+';
-            answer = num1 + num2;
-            break;
-            
-        case level <= 4:
-            if (Math.random() < 0.5) {
-                num1 = generateNumber(10, 50);
-                num2 = generateNumber(10, 50);
-                operation = '+';
+        case level === 1: // Level 1: Single digit add/subtract
+            operation = Math.random() < 0.5 ? '+' : '-';
+            if (operation === '+') {
+                num1 = generateNumber(1, 9);
+                num2 = generateNumber(1, 9);
                 answer = num1 + num2;
             } else {
-                num2 = generateNumber(10, 30);
-                num1 = generateNumber(num2 + 10, 50);
-                operation = '-';
+                num2 = generateNumber(1, 9);
+                num1 = generateNumber(num2, 9); // Ensure positive result
                 answer = num1 - num2;
             }
             break;
             
-        case level <= 6:
-            const op = Math.random();
-            if (op < 0.25) {
-                num1 = generateNumber(10, 50);
-                num2 = generateNumber(10, 50);
+        case level === 2: // Level 2: Double digit add/subtract
+            operation = Math.random() < 0.5 ? '+' : '-';
+            if (operation === '+') {
+                num1 = generateNumber(10, 99);
+                num2 = generateNumber(10, 99);
+                answer = num1 + num2;
+            } else {
+                num2 = generateNumber(10, 99);
+                num1 = generateNumber(num2, 99);
+                answer = num1 - num2;
+            }
+            break;
+            
+        case level === 3: // Level 3: Triple digit add/subtract
+            operation = Math.random() < 0.5 ? '+' : '-';
+            if (operation === '+') {
+                num1 = generateNumber(100, 999);
+                num2 = generateNumber(100, 999);
+                answer = num1 + num2;
+            } else {
+                num2 = generateNumber(100, 999);
+                num1 = generateNumber(num2, 999);
+                answer = num1 - num2;
+            }
+            break;
+            
+        case level === 4: // Level 4: Triple/double add/subtract, single multiply
+            const op4 = Math.random();
+            if (op4 < 0.33) { // Add
+                num1 = generateNumber(10, 999);
+                num2 = generateNumber(10, 999);
                 operation = '+';
                 answer = num1 + num2;
-            } else if (op < 0.5) {
-                num2 = generateNumber(10, 30);
-                num1 = generateNumber(num2 + 10, 50);
+            } else if (op4 < 0.66) { // Subtract
+                num2 = generateNumber(10, 999);
+                num1 = generateNumber(num2, 999);
                 operation = '-';
                 answer = num1 - num2;
-            } else if (op < 0.75) {
-                num1 = generateNumber(2, 12);
-                num2 = generateNumber(2, 10);
+            } else { // Single digit multiply
+                num1 = generateNumber(1, 9);
+                num2 = generateNumber(1, 9);
                 operation = '×';
                 answer = num1 * num2;
-            } else {
-                num2 = generateNumber(2, 10);
-                answer = generateNumber(2, 10);
+            }
+            break;
+            
+        case level === 5: // Level 5: Triple/double add/subtract, double multiply
+            const op5 = Math.random();
+            if (op5 < 0.33) { // Add
+                num1 = generateNumber(10, 999);
+                num2 = generateNumber(10, 999);
+                operation = '+';
+                answer = num1 + num2;
+            } else if (op5 < 0.66) { // Subtract
+                num2 = generateNumber(10, 999);
+                num1 = generateNumber(num2, 999);
+                operation = '-';
+                answer = num1 - num2;
+            } else { // Double digit multiply
+                num1 = generateNumber(10, 99);
+                num2 = generateNumber(10, 99);
+                operation = '×';
+                answer = num1 * num2;
+            }
+            break;
+            
+        case level === 6: // Level 6: Triple add/subtract, double/single multiply, single division
+            const op6 = Math.random();
+            if (op6 < 0.25) { // Triple digit add
+                num1 = generateNumber(100, 999);
+                num2 = generateNumber(100, 999);
+                operation = '+';
+                answer = num1 + num2;
+            } else if (op6 < 0.5) { // Triple digit subtract
+                num2 = generateNumber(100, 999);
+                num1 = generateNumber(num2, 999);
+                operation = '-';
+                answer = num1 - num2;
+            } else if (op6 < 0.75) { // Double/single multiply
+                num1 = generateNumber(1, 99);
+                num2 = generateNumber(1, 99);
+                operation = '×';
+                answer = num1 * num2;
+            } else { // Single digit division
+                num2 = generateNumber(1, 9);
+                answer = generateNumber(1, 9);
                 num1 = num2 * answer;
                 operation = '÷';
             }
             break;
             
-        default:
-            if (Math.random() < 0.5) {
-                num1 = generateNumber(5, 20);
-                num2 = generateNumber(5, 15);
+        case level === 7: // Level 7: Triple add/subtract, double/single multiply, double division
+            const op7 = Math.random();
+            if (op7 < 0.25) { // Triple digit add
+                num1 = generateNumber(100, 999);
+                num2 = generateNumber(100, 999);
+                operation = '+';
+                answer = num1 + num2;
+            } else if (op7 < 0.5) { // Triple digit subtract
+                num2 = generateNumber(100, 999);
+                num1 = generateNumber(num2, 999);
+                operation = '-';
+                answer = num1 - num2;
+            } else if (op7 < 0.75) { // Double/single multiply
+                num1 = generateNumber(1, 99);
+                num2 = generateNumber(1, 99);
                 operation = '×';
                 answer = num1 * num2;
-            } else {
-                num2 = generateNumber(2, 12);
-                answer = generateNumber(2, 12);
+            } else { // Double digit division
+                num2 = generateNumber(10, 99);
+                answer = generateNumber(1, 99);
+                num1 = num2 * answer;
+                operation = '÷';
+            }
+            break;
+            
+        default: // Level 8+: All operations from level 4+
+            const op8 = Math.random();
+            if (op8 < 0.2) { // Triple/double add
+                num1 = generateNumber(10, 999);
+                num2 = generateNumber(10, 999);
+                operation = '+';
+                answer = num1 + num2;
+            } else if (op8 < 0.4) { // Triple/double subtract
+                num2 = generateNumber(10, 999);
+                num1 = generateNumber(num2, 999);
+                operation = '-';
+                answer = num1 - num2;
+            } else if (op8 < 0.7) { // Double/single multiply
+                num1 = generateNumber(1, 99);
+                num2 = generateNumber(1, 99);
+                operation = '×';
+                answer = num1 * num2;
+            } else { // Double digit division
+                num2 = generateNumber(10, 99);
+                answer = generateNumber(1, 99);
                 num1 = num2 * answer;
                 operation = '÷';
             }
@@ -147,7 +226,6 @@ function generateQuestion(level) {
     
     return { num1, num2, operation, answer, options };
 }
-
 function updateTotalTime() {
     const totalSeconds = Math.floor((Date.now() - startTime) / 1000);
     const minutes = Math.floor(totalSeconds / 60);
